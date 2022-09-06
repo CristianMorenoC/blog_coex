@@ -78,7 +78,11 @@ export class PostModel implements IPostModel  {
     }
     async deletePost( data:{ post_id: string; }): Promise<IStatus>{
         try {
+
+            const post = (await getDoc(doc(this.db.dbConnection, "post", data.post_id)))
+
             const newPost: object = {
+                ...post.data,
                 status: false
             }
 
