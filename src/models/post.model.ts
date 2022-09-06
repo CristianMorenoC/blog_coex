@@ -44,15 +44,16 @@ export class PostModel implements IPostModel  {
         }
 
     }
-    async getPosts(data: { post_id: string; }): Promise<IStatus>{
+    async getAllPostUser(data: { username: string}): Promise<IStatus>{
         try {
-            const post = await getDoc(doc(this.db.dbConnection, "post", data.post_id))
+            const posts = await getDoc(doc(this.db.dbConnection, "post", data.username))
 
-            return {status: true, info: `${post}`}
+            return {status: true, info: `los post del usuario: ${data.username} son --> ${posts}`}
+            
         } catch (error) {
-            return {status: false, info: `el post no pudo ser obtenido ${error}`}
+            return {status: false, info: `los post del usuario: ${data.username} no pudieron ser obtenidos:  ${error}`}
+        
         }
-
     }
     async updatedPost( data:{ post_id: string; content: string; status: string; }): Promise<IStatus>{
         try {
