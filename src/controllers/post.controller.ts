@@ -13,11 +13,13 @@ export class PostController{
         
         const UserId = req.body.user_Id;
         const Content= req.body.content;
+        const newPost={
+            user_Id: UserId,
+            content: Content
+        }
 
-        return res.send(IPostModel.createPost(UserId, Content));
-
+        return res.send(IPostModel.createPost(newPost));
     }
-
 
     getUsersPosts(req:Request, res:Response){
         const UserId = req.body.user_Id;
@@ -38,10 +40,9 @@ export class PostController{
     }
 
     async blockUser(req:Request, res:Response):Promise<Response>{
-        const postid = req.body.postid;
         const UserId = req.body.user_Id;
     
-        return res.send(IPostModel.blockUser(postid, UserId));
+        return res.send(IPostModel.blockUser(UserId));
     }
 }
 
