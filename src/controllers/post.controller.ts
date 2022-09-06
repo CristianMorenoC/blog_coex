@@ -1,6 +1,6 @@
 import {Request, Response} from 'express';
 import IPostModel from '../models/post.model';
-import IStatus from '../models/status.model';
+import {IStatus} from '../util/status.interface';
 import { addDoc, collection, getDocs } from "firebase/firestore";
 import {db, DBConfig} from '../util/firebase';
 
@@ -9,7 +9,7 @@ export class PostController{
         private db: DBConfig
     ){}
     
-    async createPost(req:Request, res:Response): Promise<IStatus> {
+    async createPost(req:Request, res:Response) {
         
         const UserId = req.body.user_Id;
         const Content= req.body.content
@@ -20,10 +20,10 @@ export class PostController{
         }
         try {
             const ref = await addDoc(collection(this.db.dbConnection, "post"), newPost)
-            res.send( {status: true, info: `post creado con el id: ${ref.id}`})
+            return res.send( {status: true, info: `post creado con el id: ${ref.id}`})
         } catch (error) {
             console.log(error)
-            res.send({status: false, info: 'No se pudo crear el post'})
+            return res.send({status: false, info: 'No se pudo crear el post'})
         }
 
     }
