@@ -38,7 +38,7 @@ class CommentModel implements ICommentModel {
                 status: false
             }
 
-            const commentRef = collection(this.db.dbConnection, "post", data.comment_id);
+            const commentRef = collection(this.db.dbConnection, "comments", data.comment_id);
 
             await setDoc(doc(commentRef, data.comment_id), newPost);
 
