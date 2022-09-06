@@ -36,9 +36,11 @@ export class PostModel implements IPostModel  {
 
     async getPost(data: { post_id: string; }): Promise<IStatus>{
         try {
-            const post = await getDoc(doc(this.db.dbConnection, "post", data.post_id))
+            const post = (await getDoc(doc(this.db.dbConnection, "post", data.post_id)))
 
-            return {status: true, info: `${post}`}
+            const postObj = post.data
+
+            return {status: true, info: `${postObj}`}
         } catch (error) {
             return {status: false, info: `el post no pudo ser obtenido ${error}`}
         }
@@ -46,9 +48,11 @@ export class PostModel implements IPostModel  {
     }
     async getAllPostUser(data: { username: string}): Promise<IStatus>{
         try {
-            const posts = await getDoc(doc(this.db.dbConnection, "post", data.username))
+            const posts = (await getDoc(doc(this.db.dbConnection, "post", data.username)))
 
-            return {status: true, info: `los post del usuario: ${data.username} son --> ${posts}`}
+            const postObj = posts.data
+
+            return {status: true, info: `los post del usuario: ${data.username} son --> ${postObj}`}
             
         } catch (error) {
             return {status: false, info: `los post del usuario: ${data.username} no pudieron ser obtenidos:  ${error}`}
@@ -78,9 +82,7 @@ export class PostModel implements IPostModel  {
                 status: false
             }
 
-            const postRef = collection(this.db.dbConnection, "post", data.post_id)
-
-            await setDoc(doc(postRef, data.post_id), newPost)
+            await setDoc(doc(this.db.dbConnection, "post", data.post_id), newPost)
 
             return {status: true, info: `el post ha sido borrado`}
          
