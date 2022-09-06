@@ -14,17 +14,14 @@ export class PostController{
         const UserId = req.body.user_Id;
         const Content= req.body.content;
 
-        return res.send(IPostModel.createPost({UserId,Content}));
-        
-
+        return res.send(IPostModel.createPost(UserId, Content));
 
     }
 
 
     getUsersPosts(req:Request, res:Response){
         const UserId = req.body.user_Id;
-        res.send(IPostModel.getPosts(UserId));
-
+        res.send(IPostModel.getAllPostUser(UserId));
     }
 
 
@@ -44,7 +41,7 @@ export class PostController{
         const postid = req.body.postid;
         const UserId = req.body.user_Id;
     
-        return res.send(IPostModel.deletePost(postid));
+        return res.send(IPostModel.blockUser(postid, UserId));
     }
 }
 
