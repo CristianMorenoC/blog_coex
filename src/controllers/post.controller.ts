@@ -15,36 +15,39 @@ export class PostController{
         const Content= req.body.content;
         const newPost={
             user_Id: UserId,
-            content: Content
+            content: Content,
+            status: true
         }
 
-        return res.send(IPostModel.createPost(newPost));
+        return res.json(IPostModel.createPost(newPost));
     }
 
     getUsersPosts(req:Request, res:Response){
-        const UserId = req.body.user_Id;
-        res.send(IPostModel.getAllPostUser(UserId));
+        const UserId = req.params.user_Id;
+        res.json(IPostModel.getAllPostUser({username:UserId}));
     }
 
 
     getUserPost(req:Request, res:Response){
-      const postid = req.body.postid;
+      const postid = req.params.postid;
     
-        res.send(IPostModel.getPost(postid));
+        res.json(IPostModel.getPost({post_id:postid}));
     }
 
     async deletePost(req:Request, res:Response):Promise<Response>{
-        const postid = req.body.postid;
+        const postid = req.params.id;
     
-       return res.send(IPostModel.deletePost(postid));
+       return res.json(IPostModel.deletePost({post_id: postid}));
     }
 
     async blockUser(req:Request, res:Response):Promise<Response>{
-        const UserId = req.body.user_Id;
+        const UserId = req.params.id;
     
-        return res.send(IPostModel.blockUser(UserId));
+        return res.json(IPostModel.blockUser({user_id: UserId}));
     }
 }
 
 const newPost = new PostController(db)
+
+export default newPost
 

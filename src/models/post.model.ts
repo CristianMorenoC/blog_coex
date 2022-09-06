@@ -15,13 +15,14 @@ export class PostModel implements IPostModel  {
     constructor(
         private db: DBConfig
     ){}
-    async createPost(data: { user_Id: string; content: string; }): Promise<IStatus> {
+    async createPost(data: { user_Id: string; content: string; status:boolean }): Promise<IStatus> {
         
         try {
 
             const newPost: object = {
-                id: data.user_Id,
-                content: data.content
+                user_id: data.user_Id,
+                content: data.content,
+                status: data.status
             }
 
             const ref = await addDoc(collection(this.db.dbConnection, "post"), newPost)
