@@ -16,12 +16,14 @@ export class PostModel implements IPostModel  {
         private db: DBConfig
     ){}
     async createPost(data: { user_Id: string; content: string; }): Promise<IStatus> {
-        const newPost: object = {
-            id: data.user_Id,
-            content: data.content
-        }
-
+        
         try {
+
+            const newPost: object = {
+                id: data.user_Id,
+                content: data.content
+            }
+
             const ref = await addDoc(collection(this.db.dbConnection, "post"), newPost)
 
             return {status: true, info: `post creado con el id: ${ref.id}`}
@@ -50,7 +52,7 @@ export class PostModel implements IPostModel  {
                 status: data.status
             }
 
-            const postRef = collection(this.db.dbConnection, "post")
+            const postRef = collection(this.db.dbConnection, "post", data.post_id)
 
             await setDoc(doc(postRef, data.post_id), newPost)
 
@@ -60,10 +62,35 @@ export class PostModel implements IPostModel  {
         }
     }
     async deletePost( data:{ post_id: string; }): Promise<IStatus>{
+        try {
+            const newPost: object = {
+                status: false
+            }
+
+            const postRef = collection(this.db.dbConnection, "post", data.post_id)
+
+            await setDoc(doc(postRef, data.post_id), newPost)
+
+            return {status: true, info: `el post ha sido borrado`}
+         
+        } catch (error) {
+            return {status: false, info: 'el post no ha sido borrado'}
+        }        
 
     }
     async blockUser( data:{ user_id: string; }): Promise<IStatus>{
+        try {
+            const userBlock: object = {
+                id: data.user_id
+            }
 
+            await addDoc(collection(this.db.dbConnection, "BlockedUsers"), userBlock)
+
+            return {status: true, info: `el usuario con el id: ${data.user_id} fue bloqueado`}
+
+        } catch (error) {
+            return {status: false, info: `el usuario con el id: ${data.user_id} no pudo ser bloqueado`}
+        }
     }
 
     
