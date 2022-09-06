@@ -1,7 +1,7 @@
 import { initializeApp, FirebaseApp } from "firebase/app";
 import { getFirestore, Firestore } from "firebase/firestore";
 
-class DBConfig {
+export class DBConfig {
   private _app:FirebaseApp;
   public dbConnection:Firestore;
 
@@ -19,4 +19,4 @@ class DBConfig {
   }
 }
 
-export default DBConfig;
+export const db = new DBConfig()
