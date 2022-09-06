@@ -1,7 +1,7 @@
 import { IStatus } from '../util/status.interface'
 import commentView, { IComment } from './comment.view'
 
-interface IPost {
+export interface IPost {
     postId: string
     username: string
     content: string

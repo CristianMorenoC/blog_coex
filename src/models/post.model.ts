@@ -1,10 +1,11 @@
 import { db, DBConfig } from "../util/firebase";
 import { addDoc, collection, getDoc, setDoc, doc  } from "firebase/firestore";
 import { IStatus } from "../util/status.interface";
+import { IPost } from "../views/post.view";
 
 export interface IPostModel {
     createPost(data:{user_Id: string, content: string}): Promise<IStatus>,
-    getPost(data: {post_id: string}): Promise<IStatus>,
+    getPost(data: {post_id: string}): Promise<IPost>,
     updatedPost(data: {post_id: string, content: string, status: string}): Promise<IStatus>,
     deletePost(data: {post_id: string}): Promise<IStatus>,
     blockUser(data: {user_id: string}): Promise<IStatus>
@@ -35,15 +36,16 @@ export class PostModel implements IPostModel  {
         }
     }
 
-    async getPost(data: { post_id: string; }): Promise<IStatus>{
+    async getPost(data: { post_id: string; }): Promise<IPost>{
         try {
-            const post = (await getDoc(doc(this.db.dbConnection, "post", data.post_id)))
+            const post = await getDoc(doc(this.db.dbConnection, "post", data.post_id));
+            
+            const postObj = post.data();
 
-            const postObj = post.data
-
-            return {status: true, info: `${postObj}`}
+            return postObj as IPost
         } catch (error) {
-            return {status: false, info: `el post no pudo ser obtenido ${error}`}
+            console.log(error)
+            return {} as IPost
         }
 
     }
@@ -79,7 +81,11 @@ export class PostModel implements IPostModel  {
     }
     async deletePost( data:{ post_id: string; }): Promise<IStatus>{
         try {
+
+            const post = await getDoc(doc(this.db.dbConnection, "post", data.post_id));
+
             const newPost: object = {
+                ...post.data(),
                 status: false
             }
 

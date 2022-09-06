@@ -19,31 +19,34 @@ export class PostController{
             status: true
         }
 
-        return res.json(IPostModel.createPost(newPost));
+        const modernResponse = await IPostModel.createPost(newPost)
+
+        return res.json(modernResponse);
     }
 
-    getUsersPosts(req:Request, res:Response){
+    async getUsersPosts(req:Request, res:Response){
         const UserId = req.params.user_Id;
-        res.json(IPostModel.getAllPostUser({username:UserId}));
+        const modernUser = await IPostModel.getAllPostUser({username:UserId})
+        res.json(modernUser);
     }
 
 
-    getUserPost(req:Request, res:Response){
-      const postid = req.params.postid;
-    
-        res.json(IPostModel.getPost({post_id:postid}));
+    async getUserPost(req:Request, res:Response){
+      const postid = req.params.id;
+      const modernResponse = await IPostModel.getPost({post_id:postid})
+      res.json(modernResponse);
     }
 
     async deletePost(req:Request, res:Response):Promise<Response>{
         const postid = req.params.id;
-    
-       return res.json(IPostModel.deletePost({post_id: postid}));
+        const modernResponse = await IPostModel.deletePost({post_id: postid})
+       return res.json(modernResponse);
     }
 
     async blockUser(req:Request, res:Response):Promise<Response>{
         const UserId = req.params.id;
-    
-        return res.json(IPostModel.blockUser({user_id: UserId}));
+        const modernResponse = await IPostModel.blockUser({user_id: UserId})
+        return res.json(modernResponse);
     }
 }
 
