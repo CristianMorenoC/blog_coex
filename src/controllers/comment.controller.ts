@@ -15,7 +15,7 @@ export class CommentController implements ICommentController {
         const status: IStatus = { status: false, info: '' }
         try {
             let data = req.body
-            commentModel.createComment(data)
+            await commentModel.createComment(data)
             status.status = true
             status.info = 'comment succesfully created'
         } catch (err) {
@@ -27,7 +27,7 @@ export class CommentController implements ICommentController {
         const status: IStatus = { status: false, info: '' }
         try {
             let data = req.body
-            commentModel.deleteComment(data)
+            await commentModel.deleteComment(data)
             status.status = true
             status.info = 'comment succesfully deleted'
         } catch (err) {
