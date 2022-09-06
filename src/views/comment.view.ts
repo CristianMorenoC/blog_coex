@@ -1,30 +1,46 @@
 export interface IComment {
-    postId: number
+    postId: string
     madeBy: string
     content: string
 }
 
 export interface ICommentView {
     createView(data: {
-        id: number
-        postId: number
-        madBy: number
+        id: string
+        postId: string
+        madeBy: string
         content: string
         status: boolean
     }): IComment
 }
 
 export class CommentView implements ICommentView {
-    constructor() {}
+    constructor() { }
     createView(data: {
-        id: number
-        postId: number
-        madBy: number
+        id: string
+        postId: string
+        madeBy: string
         content: string
         status: boolean
     }): IComment {
-        return
+        if(!data.status){
+            const response: IComment = {
+                postId: data.postId,
+                madeBy: data.madeBy,
+                content: '',
+            }
+            return response
+        }
+        const response: IComment = {
+            postId: data.postId,
+            madeBy: data.madeBy,
+            content: data.content,
+        }
+        return response
+
     }
-}
+
+    }
+
 
 export default new CommentView()
