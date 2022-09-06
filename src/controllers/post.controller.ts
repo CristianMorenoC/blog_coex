@@ -29,15 +29,15 @@ export class PostController{
     }
 
 
-    getUsersPosts(req:Request, res:Response):IPostModel[]{
+    getUsersPosts(req:Request, res:Response){
         const UserId = req.body.user_Id;
         
         
-        return IPostModel['info'];
+        //return IPostModel['info'];
     }
 
 
-    getUserPost(req:Request, res:Response):IPostModel{
+    getUserPost(req:Request, res:Response){
         const nombre = req.body.username;
         const postid = req.body.postid;
     
@@ -56,7 +56,7 @@ export class PostController{
         }
     }
 
-    async blockUser(req:Request, res:Response):Promise<IStatus>{
+    async blockUser(req:Request, res:Response){
         
     }
 }
