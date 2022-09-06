@@ -1,17 +1,22 @@
-import { initializeApp } from "firebase/app";
-import { getFirestore } from "firebase/firestore";
+import { initializeApp, FirebaseApp } from "firebase/app";
+import { getFirestore, Firestore } from "firebase/firestore";
 
-const firebaseConfig = {
-  apiKey: "AIzaSyA58Is9XyL2mUGDqXMwbFrQs_X_V50O7LY",
-  authDomain: "blog-coex.firebaseapp.com",
-  projectId: "blog-coex",
-  storageBucket: "blog-coex.appspot.com",
-  messagingSenderId: "122934693022",
-  appId: "1:122934693022:web:4de79e8f9fa78263133f8f"
-};
+class DBConfig {
+  private _app:FirebaseApp;
+  public dbConnection:Firestore;
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+  constructor() {
+    this._app = initializeApp({
+      apiKey: "AIzaSyA58Is9XyL2mUGDqXMwbFrQs_X_V50O7LY",
+      authDomain: "blog-coex.firebaseapp.com",
+      projectId: "blog-coex",
+      storageBucket: "blog-coex.appspot.com",
+      messagingSenderId: "122934693022",
+      appId: "1:122934693022:web:4de79e8f9fa78263133f8f"
+    })
 
-export default db
+    this.dbConnection = getFirestore(this._app);
+  }
+}
+
+export default DBConfig;
