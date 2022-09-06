@@ -8,7 +8,7 @@ export interface ICommentModel {
         user_id: string
         content: string
     }): Promise<IStatus>
-    getCommentsFromPost(data: { post_id: string }): Promise<IStatus>
+    getCommentsFromPost(data: { post_id: string }): Promise<any[]>
     deleteComment(data: { comment_id: string }): Promise<IStatus>
 }
 
@@ -37,12 +37,32 @@ class CommentModel implements ICommentModel {
             }
         }
     }
-    async getCommentsFromPost(data: { post_id: string }): Promise<IStatus> {
+    async getCommentsFromPost(data: { post_id: string }): Promise<any[]> {
         try {
             const comment = await getDoc(
                 doc(this.db.dbConnection, 'comments', data.post_id)
             )
-            return { status: true, info: `${comment}` }
+            return comment.data() as Array<any>
+        } catch (err) {
+            console.log(err)
+            return []
+        }
+    }
+    async deleteComment(data: { comment_id: string }): Promise<IStatus> {
+        try {
+            const newPost: object = {
+                status: false,
+            }
+
+            const commentRef = collection(
+                this.db.dbConnection,
+                'comments',
+                data.comment_id
+            )
+
+            await setDoc(doc(commentRef, data.comment_id), newPost)
+
+            return { status: true, info: `el comentario ha sido borrado` }
         } catch (err) {
             console.log(err)
             return {
@@ -50,9 +70,6 @@ class CommentModel implements ICommentModel {
                 info: `el comentario no pudo ser creado ${err}`,
             }
         }
-    }
-    deleteComment(data: { comment_id: string }): Promise<IStatus> {
-        throw new Error('Method not implemented.')
     }
 }
 
