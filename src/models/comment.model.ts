@@ -1,5 +1,5 @@
 import { IStatus } from '../util/status.interface'
-import { addDoc, collection, getDoc, setDoc, doc } from 'firebase/firestore'
+import { addDoc, collection, getDoc, setDoc, doc, query, where } from 'firebase/firestore'
 import { DBConfig, db } from '../util/firebase'
 
 export interface ICommentModel {
@@ -14,12 +14,20 @@ export interface ICommentModel {
 
 class CommentModel implements ICommentModel {
     constructor(private db: DBConfig) {}
+
+
     async createComment(data: {
         post_id: string
         user_id: string
         content: string
     }): Promise<IStatus> {
-        try {
+        try {            
+            const blockedUserTable = await getDoc(doc(this.db.dbConnection, "blockedUsers", data.user_id))    
+            
+            if(blockedUserTable.data()?.post_id === data.post_id){
+                return {status: false, info: `el usuario con el id ${data.user_id}, no puede comentar en el post ${data.post_id}`}
+            }
+
             const ref = await addDoc(
                 collection(this.db.dbConnection, 'comments'),
                 data
