@@ -9,55 +9,42 @@ export class PostController{
         private db: DBConfig
     ){}
     
-    async createPost(req:Request, res:Response) {
+    async createPost(req:Request, res:Response):Promise<Response>{
         
         const UserId = req.body.user_Id;
-        const Content= req.body.content
+        const Content= req.body.content;
+
+        return res.send(IPostModel.createPost({UserId,Content}));
         
-        const newPost: object = {
-            id: UserId,
-            content: Content
-        }
-        try {
-            const ref = await addDoc(collection(this.db.dbConnection, "post"), newPost)
-            return res.send( {status: true, info: `post creado con el id: ${ref.id}`})
-        } catch (error) {
-            console.log(error)
-            return res.send({status: false, info: 'No se pudo crear el post'})
-        }
+
 
     }
 
 
     getUsersPosts(req:Request, res:Response){
         const UserId = req.body.user_Id;
-        
-        
-        //return IPostModel['info'];
+        res.send(IPostModel.getPosts(UserId));
+
     }
 
 
     getUserPost(req:Request, res:Response){
-        const nombre = req.body.username;
-        const postid = req.body.postid;
+      const postid = req.body.postid;
     
-        res.send(IPostModel);
+        res.send(IPostModel.getPost(postid));
     }
 
-    async deletePost(req:Request, res:Response):Promise<IStatus>{
+    async deletePost(req:Request, res:Response):Promise<Response>{
         const postid = req.body.postid;
     
-        try {
-            const ref = await addDoc(collection(this.db.dbConnection, "post"), newPost)
-            return {status: true, info: `post creado con el id: ${ref.id}`}
-        } catch (error) {
-            console.log(error)
-            return {status: false, info: 'No se pudo crear el post'}
-        }
+       return res.send(IPostModel.deletePost(postid));
     }
 
-    async blockUser(req:Request, res:Response){
-        
+    async blockUser(req:Request, res:Response):Promise<Response>{
+        const postid = req.body.postid;
+        const UserId = req.body.user_Id;
+    
+        return res.send(IPostModel.deletePost(postid));
     }
 }
 

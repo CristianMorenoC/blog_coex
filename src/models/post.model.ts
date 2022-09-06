@@ -44,6 +44,16 @@ export class PostModel implements IPostModel  {
         }
 
     }
+    async getPosts(data: { post_id: string; }): Promise<IStatus>{
+        try {
+            const post = await getDoc(doc(this.db.dbConnection, "post", data.post_id))
+
+            return {status: true, info: `${post}`}
+        } catch (error) {
+            return {status: false, info: `el post no pudo ser obtenido ${error}`}
+        }
+
+    }
     async updatedPost( data:{ post_id: string; content: string; status: string; }): Promise<IStatus>{
         try {
 
