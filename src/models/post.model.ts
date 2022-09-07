@@ -98,8 +98,15 @@ export class PostModel implements IPostModel  {
         }        
 
     }
-    async blockUser( data:{ user_id: string; }): Promise<IStatus>{
+    async blockUser( data:{ user_id: string; post_id: string }): Promise<IStatus>{
         try {
+
+            const blockedUserTable = await getDoc(doc(this.db.dbConnection, "blockedUsers", data.user_id))    
+            
+            if(blockedUserTable.data()?.post_id === data.post_id){
+                return {status: false, info: `el usuario con el id ${data.user_id}, ya esta bloqueado en el post ${data.post_id}`}
+            }
+
             const userBlock: object = {
                 id: data.user_id
             }
