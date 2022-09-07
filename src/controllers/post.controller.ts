@@ -25,7 +25,7 @@ export class PostController{
     }
 
     async getUsersPosts(req:Request, res:Response){
-        const UserId = req.params.user_Id;
+        const UserId = req.params.id;
         const modernUser = await IPostModel.getAllPostUser({username:UserId})
         res.json(modernUser);
     }
@@ -44,8 +44,9 @@ export class PostController{
     }
 
     async blockUser(req:Request, res:Response):Promise<Response>{
-        const UserId = req.params.id;
-        const modernResponse = await IPostModel.blockUser({user_id: UserId})
+        const UserId = req.params.userId;
+        const postId = req.params.postId;
+        const modernResponse = await IPostModel.blockUser({user_id: UserId, post_id: postId })
         return res.json(modernResponse);
     }
 }

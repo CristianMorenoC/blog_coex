@@ -26,7 +26,7 @@ export class CommentController implements ICommentController {
     public async deleteComment(req: Request, res: Response): Promise<Response> {
         const status: IStatus = { status: false, info: '' }
         try {
-            let data = req.body
+            let data = {comment_id: req.params.id}
             await commentModel.deleteComment(data)
             status.status = true
             status.info = 'comment succesfully deleted'
@@ -41,8 +41,9 @@ export class CommentController implements ICommentController {
     ): Promise<Response> {
         const comments: IComment[] = []
         try {
-            const data = req.body
+            let data = {post_id: req.params.id}
             const rawComments = await commentModel.getCommentsFromPost(data)
+            console.log(rawComments)
             rawComments.forEach(comment => {
                 comments.push(commentView.createView(comment))
             })
@@ -52,3 +53,5 @@ export class CommentController implements ICommentController {
         return res.send(comments)
     }
 }
+
+export default new CommentController();

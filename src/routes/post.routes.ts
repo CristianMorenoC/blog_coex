@@ -13,8 +13,11 @@ router
 .delete(postController.deletePost)
 
 router
-.route('posts/user/:username')
+.route('/posts/:postId/:userId')
 .post(postController.blockUser)
+
+router
+.route('/posts/user/:username')
 .get(postController.getUsersPosts)
 
 export default router;

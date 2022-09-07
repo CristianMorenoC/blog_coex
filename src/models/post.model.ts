@@ -108,7 +108,8 @@ export class PostModel implements IPostModel  {
             }
 
             const userBlock: object = {
-                id: data.user_id
+                user_id: data.user_id,
+                post_id: data.post_id
             }
 
             await addDoc(collection(this.db.dbConnection, "BlockedUsers"), userBlock)

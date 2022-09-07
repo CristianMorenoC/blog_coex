@@ -14,16 +14,17 @@ class UserModel implements IUserModel {
         try {
 
             const newUser: object = {
-                username: data.username
+                username: data.username,
+                name: data.name
             }
 
             const ref = await addDoc(collection(this.db.dbConnection, "Users"), newUser)
 
-            return {status: true, info: `post creado con el id: ${ref.id}`}
+            return {status: true, info: `usuario creado con el id: ${ref.id}`}
             
         } catch (error) {
             console.log(error)
-            return {status: false, info: `el post no pudo ser creado ${error}`}
+            return {status: false, info: `el usuario no pudo ser creado ${error}`}
         }
 
     }
